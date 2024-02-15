@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 
-const ViewToggle = ({ state }) => {
-  const [radioValue, setRadioValue] = useState('courses');
-
-
+const ViewToggle = ({ state, setState }) => {
   return (
     <>
       <ButtonGroup>
@@ -16,8 +13,8 @@ const ViewToggle = ({ state }) => {
           variant={'outline-primary'}
           name="radio"
           value={"courses"}
-          checked={radioValue === "courses"}
-          onChange={(e) => setRadioValue(e.currentTarget.value)}
+          checked={state === "courses"}
+          onChange={(e) => setState(e.currentTarget.value)}
         >
           {"Courses"}
         </ToggleButton>
@@ -27,8 +24,8 @@ const ViewToggle = ({ state }) => {
           variant={'outline-success'}
           name="radio"
           value={"students"}
-          checked={radioValue === "students"}
-          onChange={(e) => setRadioValue(e.currentTarget.value)}
+          checked={state === "students"}
+          onChange={(e) => setState(e.currentTarget.value)}
         >
           {"Students"}
         </ToggleButton>
