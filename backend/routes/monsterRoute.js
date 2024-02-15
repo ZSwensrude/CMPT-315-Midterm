@@ -3,10 +3,10 @@ import { createMonster, deleteMonster, getMonster, getMonsters, updateMonster } 
 
 const router = Express.Router();
 
-// example get: http://localhost:3000/monsters/
+// example get: http://localhost:8080/monsters/
 router.get("/", getMonsters);
 
-// example get: http://localhost:3000/monsters/3
+// example get: http://localhost:8080/monsters/3
 router.get("/:id", getMonster);
 
 /* example: post with the following object in the body:
@@ -21,14 +21,14 @@ router.get("/:id", getMonster);
 */ 
 router.post("/", createMonster);
 
-/* example patch: localhost:3000/monsters/8 with body
+/* example patch: localhost:8080/monsters/8 with body
 {
   "name": "updated name"
 }
 */
 router.patch("/:id", updateMonster);
 
-// example delete: localhost:3000/monsters/3
+// example delete: localhost:8080/monsters/3
 router.delete("/:id", deleteMonster);
 
 export default router;
