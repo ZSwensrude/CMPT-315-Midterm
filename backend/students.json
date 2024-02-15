@@ -1,0 +1,27 @@
+[
+  {
+    "studentID": "3000",
+    "name": "Zach",
+    "email": "zach@zach.com"
+  },
+  {
+    "studentID": "3010",
+    "name": "Jack",
+    "email": "jack@email.com"
+  },
+  {
+    "studentID": "5005",
+    "name": "Zoe",
+    "email": "zoe@email.com"
+  },
+  {
+    "studentID": "2410",
+    "name": "Saul",
+    "email": "sman@email.com"
+  },
+  {
+    "studentID": "10",
+    "name": "Kira",
+    "email": "longernamek@longdomain.com"
+  }
+]

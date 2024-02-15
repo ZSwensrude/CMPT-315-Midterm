@@ -1,0 +1,51 @@
+[
+  {
+    "courseName": "CHEM330",
+    "department": "Sciences",
+    "startTime": "9:00",
+    "capacity": 2,
+    "studentsEnrolled": []
+  },
+  {
+    "courseName": "CMPT315",
+    "department": "Computer Science",
+    "startTime": "9:00",
+    "capacity": 2,
+    "studentsEnrolled": []
+  },
+  {
+    "courseName": "CMPT101",
+    "department": "Computer Science",
+    "startTime": "10:00",
+    "capacity": 5,
+    "studentsEnrolled": []
+  },
+  {
+    "courseName": "PSYC201",
+    "department": "Psychology",
+    "startTime": "10:00",
+    "capacity": 2,
+    "studentsEnrolled": []
+  },
+  {
+    "courseName": "MATH250",
+    "department": "Math",
+    "startTime": "13:00",
+    "capacity": 2,
+    "studentsEnrolled": []
+  },
+  {
+    "courseName": "PSYC100",
+    "department": "Psychology",
+    "startTime": "15:00",
+    "capacity": 10,
+    "studentsEnrolled": []
+  },
+  {
+    "courseName": "CMPT395",
+    "department": "Computer Science",
+    "timeOfDay": "12:00",
+    "capacity": 2,
+    "studentsEnrolled": []
+  }
+]
