@@ -5,10 +5,12 @@ import connectDB from './database/connectDB.js';
 import bodyParser from 'body-parser';
 import courseRouter from './routes/courseRoute.js';
 import studentRouter from './routes/studentRoute.js';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT || 8080;
 
 const url = await connectDB();

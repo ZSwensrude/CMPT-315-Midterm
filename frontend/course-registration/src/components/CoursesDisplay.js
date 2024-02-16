@@ -2,10 +2,23 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import './components.css'
+import { useQuery } from '@tanstack/react-query';
 
 const CoursesDisplay = () => {
 
-  
+  const { isPending, error, data } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: () =>
+      fetch('http://localhost:8080/courses').then((res) =>
+        res.json(),
+      ),
+  })
+
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
+
+  console.log("data", data);
 
   return (
     <div className="courseDisplay">
