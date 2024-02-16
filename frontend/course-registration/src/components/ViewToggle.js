@@ -19,15 +19,15 @@ const ViewToggle = ({ state, setState }) => {
           {"Courses"}
         </ToggleButton>
         <ToggleButton
-          id={`radio-students`}
+          id={`radio-schedules`}
           type="radio"
           variant={'outline-success'}
           name="radio"
-          value={"students"}
-          checked={state === "students"}
+          value={"schedules"}
+          checked={state === "schedules"}
           onChange={(e) => setState(e.currentTarget.value)}
         >
-          {"Students"}
+          {"Schedules"}
         </ToggleButton>
       </ButtonGroup>
     </>

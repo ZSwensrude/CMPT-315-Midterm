@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 // set to use the courses router if at /courses
 app.use('/courses', courseRouter);
-// set to use the student router if at /courses
+// set to use the student router if at /student
 app.use('/students', studentRouter);
 
 // Not found

@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState } from 'react';
 import ViewToggle from './components/ViewToggle';
 import CoursesDisplay from './components/CoursesDisplay';
-import StudentsDisplay from './components/StudentsDisplay';
+import ScheduleDisplay from './components/ScheduleDisplay';
 
 function App() {
   const [state, setState] = useState("courses")
@@ -14,7 +14,7 @@ function App() {
       { state === 'courses' ? (
         <CoursesDisplay />
       ) : (
-        <StudentsDisplay /> 
+        <ScheduleDisplay /> 
       ) }
     </div>
   );
