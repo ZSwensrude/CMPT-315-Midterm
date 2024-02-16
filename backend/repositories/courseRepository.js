@@ -33,6 +33,23 @@ export const updateCoursesInRepository = async (id, query) => {
   } 
 }
 
+export const addStudentToCourseInRepository = async (id, query) => {
+  let exists = await courseExists(id);
+  if (!exists) {
+    return -1;
+  }
+  try {
+    const course = await Course.findOneAndUpdate(
+      { id: id },
+      { $push: { studentsEnrolled: query.body.studentID } },
+      { new: true }
+    ).lean();
+    return course;
+  } catch (e) {
+    throw Error("Error while updating course: ", e);
+  } 
+}
+
 export const deleteCourseFromRepository = async (id) => {
   try {
     const course = await Course.findOneAndDelete({ id: id });

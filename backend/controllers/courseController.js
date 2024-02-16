@@ -1,6 +1,6 @@
 // Code adapted from https://github.com/mrchenliang/learning-node
 
-import { getCoursesFromRepository, updateCoursesInRepository, deleteCourseFromRepository, createCourseInRepository } from "../repositories/courseRepository.js";
+import { getCoursesFromRepository, updateCoursesInRepository, deleteCourseFromRepository, createCourseInRepository, addStudentToCourseInRepository } from "../repositories/courseRepository.js";
 
 export const getCourses = async (req, res) => {
   try {
@@ -46,6 +46,21 @@ export const updateCourse = async (req, res) => {
   } catch (e) {
     console.log("Failed to update course: ", e); 
     res.status(400).send("Update failed");
+  }
+}
+
+export const addStudentToCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const course = await addStudentToCourseInRepository(id, req);
+    if (course === -1) {
+      res.status(400).send("The course you are trying to update with id " + id + " likely does not exist.")
+    } else {
+      res.status(200).send(course);
+    }
+  } catch (e) {
+    console.log("Failed to add student to course: ", e); 
+    res.status(400).send("Add Student failed");
   }
 }
 

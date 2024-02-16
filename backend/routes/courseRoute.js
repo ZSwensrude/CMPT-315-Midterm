@@ -1,5 +1,5 @@
 import Express from "express";
-import { createCourse, deleteCourse, getCourse, getCourses, updateCourse } from "../controllers/courseController.js";
+import { createCourse, deleteCourse, getCourse, getCourses, updateCourse, addStudentToCourse } from "../controllers/courseController.js";
 
 const courseRouter = Express.Router();
 
@@ -27,6 +27,13 @@ courseRouter.post("/", createCourse);
 }
 */
 courseRouter.patch("/:id", updateCourse);
+
+/* example patch: localhost:8080/courses/addstudent/6 with body
+{
+    "studentID": "100"
+}
+*/
+courseRouter.patch("/addStudent/:id", addStudentToCourse);
 
 // example delete: localhost:8080/courses/3
 courseRouter.delete("/:id", deleteCourse);
