@@ -29,7 +29,7 @@ export const createStudent = async (req, res) => {
     res.status(201).send(student);
   } catch (e) {
     console.log("Failed to create student: ", e); 
-    res.status(400).send('Create failed. You likely did not include all required fields: "name":, "address": {"city":}, "image_url": ');
+    res.status(400).send('Create failed. You likely did not include all required fields: "name":, "email":, or set "studentID" to be negative.');
   }
 }
 

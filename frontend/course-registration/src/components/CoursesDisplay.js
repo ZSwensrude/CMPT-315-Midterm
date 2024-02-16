@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import StudentDropdown from "./StudentDropdown";
 
 const CoursesDisplay = () => {
+  // if no student selected, default value is -1
   const [selectedStudent, setSelectedStudent] = useState(-1);
 
   const { isPending: coursesPending, error: coursesError, data: coursesData, refetch: coursesRefetch } = useQuery({
@@ -24,18 +25,6 @@ const CoursesDisplay = () => {
         res.json(),
       ),
   });
-
-  useEffect( () => {
-    console.log("courses", coursesData);
-  }, [coursesData]);
-
-  useEffect( () => {
-    console.log("students", studentsData);
-  }, [studentsData]);
-
-  useEffect( () => {
-    console.log("selectedStudent", selectedStudent);
-  }, [selectedStudent]);
 
   const onStudentSelect = (studentID) => {
     console.log("selected student id: ", studentID);
