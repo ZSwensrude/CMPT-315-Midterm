@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const studentSchema = new mongoose.Schema(
   {
-    studentID: {type: String, required: true},
+    studentID: {type: Number, required: true},
     name: {type: String, required: true},
     email: {type: String, required: true},
   },

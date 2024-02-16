@@ -1,13 +1,13 @@
 import Express from "express";
 import { createCourse, deleteCourse, getCourse, getCourses, updateCourse } from "../controllers/courseController.js";
 
-const router = Express.Router();
+const courseRouter = Express.Router();
 
 // example get: http://localhost:8080/courses/
-router.get("/", getCourses);
+courseRouter.get("/", getCourses);
 
 // example get: http://localhost:8080/courses/3
-router.get("/:id", getCourse);
+courseRouter.get("/:id", getCourse);
 
 /* example: post with the following object in the body:
 {
@@ -19,16 +19,16 @@ router.get("/:id", getCourse);
   "image_url": "test.png"
 }
 */ 
-router.post("/", createCourse);
+courseRouter.post("/", createCourse);
 
 /* example patch: localhost:8080/courses/8 with body
 {
   "name": "updated name"
 }
 */
-router.patch("/:id", updateCourse);
+courseRouter.patch("/:id", updateCourse);
 
 // example delete: localhost:8080/courses/3
-router.delete("/:id", deleteCourse);
+courseRouter.delete("/:id", deleteCourse);
 
-export default router;
+export default courseRouter;
