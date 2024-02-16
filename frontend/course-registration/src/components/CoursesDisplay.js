@@ -1,35 +1,58 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import './components.css'
 import { useQuery } from '@tanstack/react-query';
 import Button from 'react-bootstrap/Button';
+import StudentDropdown from "./StudentDropdown";
 
 const CoursesDisplay = () => {
+  const [selectedStudent, setSelectedStudent] = useState(-1);
 
-  const { isPending, error, data, refetch } = useQuery({
+  const { isPending: coursesPending, error: coursesError, data: coursesData, refetch: coursesRefetch } = useQuery({
     queryKey: ['repoCourses'],
     queryFn: () =>
       fetch('http://localhost:8080/courses').then((res) =>
         res.json(),
       ),
-  })
+  });
+
+  const { isPending: studentsPending, error: studentsError, data: studentsData, refetch: studentsRefetch } = useQuery({
+    queryKey: ['repoStudents'],
+    queryFn: () =>
+      fetch('http://localhost:8080/students').then((res) =>
+        res.json(),
+      ),
+  });
 
   useEffect( () => {
-    console.log("courses", data);
-  }, [data]);
+    console.log("courses", coursesData);
+  }, [coursesData]);
 
-  if (isPending) return 'Loading...'
+  useEffect( () => {
+    console.log("students", studentsData);
+  }, [studentsData]);
 
-  if (error) return 'An error has occurred: ' + error.message
+  useEffect( () => {
+    console.log("selectedStudent", selectedStudent);
+  }, [selectedStudent]);
+
+  const onStudentSelect = (studentID) => {
+    console.log("selected student id: ", studentID);
+    setSelectedStudent(studentID);
+  };
 
 
+  //loading/pending checks
+  if (coursesPending || studentsPending) return 'Loading...'
+  if (coursesError || studentsError) return 'An error has occurred: ' + coursesError.message
 
   return (
     <div className="courseDisplay">
       <div>
         <h1>Courses</h1>
-        <Button  variant="secondary" onClick={() => refetch()} />
+        <Button variant="secondary" onClick={() => {coursesRefetch(); studentsRefetch();} } >Refresh</Button>
+        <StudentDropdown students={studentsData} onStudentSelect={onStudentSelect} />
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -41,7 +64,7 @@ const CoursesDisplay = () => {
             </tr>
           </thead>
           <tbody>
-            { data?.map( (course, index) => (
+            { coursesData?.map( (course, index) => (
               <tr key={`course-${index}`}>
                 <td>{course.id}</td>
                 <td>{course.courseName}</td>
