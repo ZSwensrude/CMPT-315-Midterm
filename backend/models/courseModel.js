@@ -11,7 +11,7 @@ const courseSchema = new mongoose.Schema(
     capacity: {type: Number, required: true},
     studentsEnrolled: { type : Array , "default" : [] }
   },
-  { timestamps: true, strictQuery: true, versionKey: false }
+  { strictQuery: true, versionKey: false }
 )
 
 const Course = mongoose.model("Course", courseSchema);

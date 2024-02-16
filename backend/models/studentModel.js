@@ -8,7 +8,7 @@ const studentSchema = new mongoose.Schema(
     name: {type: String, required: true},
     email: {type: String, required: true},
   },
-  { timestamps: true, strictQuery: true, versionKey: false }
+  { strictQuery: true, versionKey: false }
 )
 
 const Student = mongoose.model("Student", studentSchema);

@@ -1,7 +1,7 @@
 // Code adapted from https://github.com/mrchenliang/learning-node
 import dotenv from 'dotenv';
 import express from "express";
-import connectDB from './database/courseDB.js';
+import connectDB from './database/connectDB.js';
 import bodyParser from 'body-parser';
 import courseRouter from './routes/courseRoute.js';
 import studentRouter from './routes/studentRoute.js';
