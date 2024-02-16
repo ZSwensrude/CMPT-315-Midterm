@@ -1,29 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import './components.css'
 import { useQuery } from '@tanstack/react-query';
+import Button from 'react-bootstrap/Button';
 
 const CoursesDisplay = () => {
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ['repoData'],
+  const { isPending, error, data, refetch } = useQuery({
+    queryKey: ['repoCourses'],
     queryFn: () =>
       fetch('http://localhost:8080/courses').then((res) =>
         res.json(),
       ),
   })
 
+  useEffect( () => {
+    console.log("courses", data);
+  }, [data]);
+
   if (isPending) return 'Loading...'
 
   if (error) return 'An error has occurred: ' + error.message
 
-  console.log("data", data);
+
 
   return (
     <div className="courseDisplay">
       <div>
         <h1>Courses</h1>
+        <Button  variant="secondary" onClick={() => refetch()} />
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -35,14 +41,15 @@ const CoursesDisplay = () => {
             </tr>
           </thead>
           <tbody>
-            {/* gonna need to map through courses to display here */}
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>3/6</td>
-            </tr>
+            { data?.map( (course, index) => (
+              <tr key={`course-${index}`}>
+                <td>{course.id}</td>
+                <td>{course.courseName}</td>
+                <td>{course.department}</td>
+                <td>{course.startTime}</td>
+                <td>?/{course.capacity}</td>
+              </tr>
+            )) }
           </tbody>
         </Table>
       </div>  

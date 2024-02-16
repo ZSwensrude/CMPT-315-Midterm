@@ -51,7 +51,7 @@
     "id": 7,
     "courseName": "CMPT395",
     "department": "Computer Science",
-    "timeOfDay": "12:00",
+    "startTime": "12:00",
     "capacity": 2,
     "studentsEnrolled": []
   }
