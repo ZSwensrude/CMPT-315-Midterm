@@ -3,3 +3,7 @@
   justify-content: center;
   align-items: center;
 }
+
+.dropdown {
+  padding-bottom: 10px;
+}

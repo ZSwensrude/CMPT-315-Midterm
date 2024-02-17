@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
-import './components.css'
+import './components.css';
 import { useQuery } from '@tanstack/react-query';
 import Button from 'react-bootstrap/Button';
 import StudentDropdown from "./StudentDropdown";
@@ -26,7 +26,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
   });
 
   // get student data
-  const { isPending: studentsPending, error: studentsError, data: studentsData, refetch: studentsRefetch } = useQuery({
+  const { isPending: studentsPending, error: studentsError, data: studentsData } = useQuery({
     queryKey: ['repoStudents'],
     queryFn: () =>
       fetch('http://localhost:8080/students').then((res) =>
@@ -117,15 +117,11 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
       // show capacity full warning
       toast.error("Course full!");
       return -1;
-    }
-
-    if (studentInCourse(selectedStudent, selectedCourse)) {
+    } else if (studentInCourse(selectedStudent, selectedCourse)) {
       // show already in course warning (shouldnt happen cause button changes)
       toast.error("Student already in course!");
       return -1;
-    }
-
-    if (courseTimeConflict(selectedStudent, selectedCourse)) {
+    } else if (courseTimeConflict(selectedStudent, selectedCourse)) {
       // show time conflict warning 
       toast.error("Course has time conflict with another student course!");
       return -1;
@@ -152,6 +148,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
    */
   const unenrollCurrentStudent = async (selectedCourse) => {
     if (!studentInCourse(selectedStudent, selectedCourse)) {
+      // (shouldnt happen cause button changes)
       toast.error("Student not in course!");
       return -1;
     }
@@ -177,9 +174,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
         autoClose={2000}
       />
       <div>
-        <h1>Courses</h1>
-        <Button variant="secondary" onClick={() => {coursesRefetch(); studentsRefetch();} } >Refresh</Button>
-        <StudentDropdown students={studentsData} onStudentSelect={onStudentSelect} />
+        <StudentDropdown students={studentsData} onStudentSelect={onStudentSelect} className="dropdown" />
         { courses?.length > 0 ? (
           <Table striped bordered hover>
             <thead>

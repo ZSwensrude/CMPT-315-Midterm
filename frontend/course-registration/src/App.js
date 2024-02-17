@@ -13,8 +13,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="App">
-        <h1>Course Registration main page</h1>
+        <h1>Course Registration App</h1>
         <ViewToggle state={state} setState={setState} />
+        <hr />
         <CoursesDisplay scheduleDisplay={state !== 'courses'} />
       </div>
     </QueryClientProvider>
