@@ -9,8 +9,6 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// note: this file is kinda long with all the helper functions so if i had more time I'd
-// prolly move them to a utils file
 const CoursesDisplay = ({ scheduleDisplay }) => {
   // if no student selected, default value is -1
   const [selectedStudent, setSelectedStudent] = useState(-1);
