@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import Button from 'react-bootstrap/Button';
 import StudentDropdown from "./StudentDropdown";
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // note: this file is kinda long with all the helper functions so if i had more time I'd
 // prolly move them to a utils file
@@ -113,19 +115,19 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
   const enrollCurrentStudent = async (selectedCourse) => {
     if (!spaceInCourse(selectedCourse)) {
       // show capacity full warning
-      console.log("course full!");
+      toast.error("Course full!");
       return -1;
     }
 
     if (studentInCourse(selectedStudent, selectedCourse)) {
       // show already in course warning (shouldnt happen cause button changes)
-      console.log("student already in course!");
+      toast.error("Student already in course!");
       return -1;
     }
 
     if (courseTimeConflict(selectedStudent, selectedCourse)) {
       // show time conflict warning 
-      console.log("course has time conflict with another student course")
+      toast.error("Course has time conflict with another student course!");
       return -1;
     }
 
@@ -134,7 +136,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
     try {
       // then try to send it as a patch
       const response = await axios.patch(`http://localhost:8080/courses/addstudent/${selectedCourse}`, newData);
-      console.log('Update successful:', response.data);
+      toast(`Enrolled in ${response.data.courseName}!`);
       await coursesRefetch();
       // Handle successful update
     } catch (error) {
@@ -150,7 +152,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
    */
   const unenrollCurrentStudent = async (selectedCourse) => {
     if (!studentInCourse(selectedStudent, selectedCourse)) {
-      console.log("student not in course!");
+      toast.error("Student not in course!");
       return -1;
     }
 
@@ -159,7 +161,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
     try {
       // then try to send it as a patch
       const response = await axios.patch(`http://localhost:8080/courses/removestudent/${selectedCourse}`, newData);
-      console.log('Update successful:', response.data);
+      toast(`Unenrolled from ${response.data.courseName}!`);
       await coursesRefetch();
       // Handle successful update
     } catch (error) {
@@ -170,6 +172,10 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
 
   return (
     <div className="courseDisplay">
+      <ToastContainer 
+        position="bottom-center"
+        autoClose={2000}
+      />
       <div>
         <h1>Courses</h1>
         <Button variant="secondary" onClick={() => {coursesRefetch(); studentsRefetch();} } >Refresh</Button>
