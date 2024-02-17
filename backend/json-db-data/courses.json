@@ -3,7 +3,7 @@
     "id": 1,
     "courseName": "CHEM330",
     "department": "Sciences",
-    "startTime": "9:00",
+    "timeOfDay": "9:00",
     "capacity": 2,
     "studentsEnrolled": []
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "courseName": "CMPT315",
     "department": "Computer Science",
-    "startTime": "9:00",
+    "timeOfDay": "9:00",
     "capacity": 2,
     "studentsEnrolled": []
   },
@@ -19,7 +19,7 @@
     "id": 3,
     "courseName": "CMPT101",
     "department": "Computer Science",
-    "startTime": "10:00",
+    "timeOfDay": "10:00",
     "capacity": 5,
     "studentsEnrolled": []
   },
@@ -27,7 +27,7 @@
     "id": 4,
     "courseName": "PSYC201",
     "department": "Psychology",
-    "startTime": "10:00",
+    "timeOfDay": "10:00",
     "capacity": 2,
     "studentsEnrolled": []
   },
@@ -35,7 +35,7 @@
     "id": 5,
     "courseName": "MATH250",
     "department": "Math",
-    "startTime": "13:00",
+    "timeOfDay": "13:00",
     "capacity": 2,
     "studentsEnrolled": []
   },
@@ -43,7 +43,7 @@
     "id": 6,
     "courseName": "PSYC100",
     "department": "Psychology",
-    "startTime": "15:00",
+    "timeOfDay": "15:00",
     "capacity": 10,
     "studentsEnrolled": []
   },
@@ -51,7 +51,7 @@
     "id": 7,
     "courseName": "CMPT395",
     "department": "Computer Science",
-    "startTime": "12:00",
+    "timeOfDay": "12:00",
     "capacity": 2,
     "studentsEnrolled": []
   }

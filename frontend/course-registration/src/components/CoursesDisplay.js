@@ -100,7 +100,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
     if (!foundCourse)
       return -1;
 
-    if(studentCourses.find(course => course.startTime === foundCourse.startTime)) {
+    if(studentCourses.find(course => course.timeOfDay === foundCourse.timeOfDay)) {
       return true;
     }
 
@@ -195,7 +195,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
                   <td>{course.id}</td>
                   <td>{course.courseName}</td>
                   <td>{course.department}</td>
-                  <td>{course.startTime}</td>
+                  <td>{course.timeOfDay}</td>
                   <td>{course.studentsEnrolled.length}/{course.capacity}</td>
                   { selectedStudent !== -1 && (
                     <td>

@@ -29,7 +29,7 @@ export const createCourse = async (req, res) => {
     res.status(201).send(course);
   } catch (e) {
     console.log("Failed to create course: ", e); 
-    res.status(400).send('Create failed. You likely did not include all required fields: id:, courseName:, department:, startTime:, capacity:');
+    res.status(400).send('Create failed. You likely did not include all required fields: id:, courseName:, department:, timeOfDay:, capacity:');
   }
 }
 
