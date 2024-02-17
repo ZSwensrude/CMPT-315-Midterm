@@ -30,11 +30,12 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
 
   useEffect( () => {
     if (scheduleDisplay){
+      // if we are looking at the schedule view, get only the courses the student is in (if any)
       setCourses(coursesData.filter((course) => course.studentsEnrolled.includes(`${selectedStudent}`)));
     } else {
+      // otherwise show all courses
       setCourses(coursesData);
     }
-    
   }, [scheduleDisplay, coursesData, selectedStudent])
   
   useEffect( () => {
@@ -78,6 +79,24 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
 
   }
 
+  const courseTimeConflict = (studentID, courseID) => {
+    const studentCourses = coursesData.filter((course) => course.studentsEnrolled.includes(`${selectedStudent}`))
+    // no courses = no time conflict :)
+    if (studentCourses.length === 0)
+      return false; 
+
+    // otherwise we gotta actually check :(
+    const foundCourse = courses.find(course => course.id === courseID);
+    if (!foundCourse)
+      return -1;
+
+    if(studentCourses.find(course => course.startTime === foundCourse.startTime)) {
+      return true;
+    }
+
+    return false;
+  }
+
   /**
    * enrolls currently selected student in the course clicked
    * @param {*} selectedCourse course enroll was clicked on
@@ -92,6 +111,11 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
 
     if (studentInCourse(selectedStudent, selectedCourse)) {
       console.log("student already in course!");
+      return -1;
+    }
+
+    if (courseTimeConflict(selectedStudent, selectedCourse)) {
+      console.log("course has time conflict with another student course")
       return -1;
     }
 
