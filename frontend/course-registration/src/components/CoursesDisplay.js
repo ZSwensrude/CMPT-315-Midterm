@@ -29,7 +29,7 @@ const CoursesDisplay = () => {
 
   useEffect( () => {
     console.log("coursesData", coursesData);
-  }, coursesData)
+  }, [coursesData])
 
   const onStudentSelect = (studentID) => {
     console.log("selected student id: ", studentID);
