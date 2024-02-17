@@ -65,15 +65,16 @@ const CoursesDisplay = () => {
     if (!foundCourse)
       return -1;
 
-    console.log("studentID", studentID, "foundCourse.studentsEnrolled", foundCourse.studentsEnrolled, foundCourse.studentsEnrolled.includes(`${studentID}`))
-
     return (foundCourse.studentsEnrolled.includes(`${studentID}`));
 
   }
 
+  /**
+   * enrolls currently selected student in the course clicked
+   * @param {*} selectedCourse course enroll was clicked on
+   * @returns N/A
+   */
   const enrollCurrentStudent = async (selectedCourse) => {
-    await coursesRefetch();
-
     if (!spaceInCourse(selectedCourse)) {
       // show capacity full warning
       console.log("course full!");
@@ -99,8 +100,26 @@ const CoursesDisplay = () => {
     }
   }
 
+  const unenrollCurrentStudent = async (selectedCourse) => {
+    if (!studentInCourse(selectedStudent, selectedCourse)) {
+      console.log("student not in course!");
+      return -1;
+    }
 
-  
+    // create json body we are sending
+    let newData = { "studentID": `${selectedStudent}` } 
+    try {
+      // then try to send it as a patch
+      const response = await axios.patch(`http://localhost:8080/courses/removestudent/${selectedCourse}`, newData);
+      console.log('Update successful:', response.data);
+      await coursesRefetch();
+      // Handle successful update
+    } catch (error) {
+      console.error('Update failed:', error);
+      // Handle error
+    }
+  }
+
 
   return (
     <div className="courseDisplay">
@@ -116,6 +135,7 @@ const CoursesDisplay = () => {
               <th>Department</th>
               <th>Time</th>
               <th>Capacity</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -125,13 +145,20 @@ const CoursesDisplay = () => {
                 <td>{course.courseName}</td>
                 <td>{course.department}</td>
                 <td>{course.startTime}</td>
-                <td>?/{course.capacity}</td>
+                <td>{course.studentsEnrolled.length}/{course.capacity}</td>
                 { selectedStudent !== -1 && (
                   <td>
-                    <Button 
-                      variant="success"
-                      onClick={() => enrollCurrentStudent(course.id)}
-                    >Enroll</Button>
+                    { !studentInCourse(selectedStudent, course.id) ? (
+                      <Button 
+                        variant="success"
+                        onClick={() => enrollCurrentStudent(course.id)}
+                      >Enroll</Button>
+                    ) : (
+                      <Button 
+                        variant="danger"
+                        onClick={() => unenrollCurrentStudent(course.id)}
+                      >Unenroll</Button>
+                    )}
                   </td>
                 ) }
               </tr>
