@@ -11,31 +11,33 @@ courseRouter.get("/:id", getCourse);
 
 /* example: post with the following object in the body:
 {
-  "name": "test",
-  "address": {
-    "city": "city"
-  },
-  "email": "test@email.com",
-  "image_url": "test.png"
+  {
+  "courseName": "CHEM330",
+  "department": "Sciences",
+  "timeOfDay": "9:00",
+  "capacity": 2,
+  }
 }
 */ 
 courseRouter.post("/", createCourse);
 
 /* example patch: localhost:8080/courses/8 with body
 {
-  "name": "updated name"
+  "courseName": "updated name"
 }
 */
 courseRouter.patch("/:id", updateCourse);
 
-/* example patch: localhost:8080/courses/addstudent/6 with body
+/* adds student to studentsEnrolled in course object
+example patch: localhost:8080/courses/addstudent/6 with body
 {
     "studentID": "100"
 }
 */
 courseRouter.patch("/addStudent/:id", addStudentToCourse);
 
-/* example patch: localhost:8080/courses/removestudent/6 with body
+/* removes student from studentsEnrolled in course object
+example patch: localhost:8080/courses/removestudent/6 with body
 {
     "studentID": "100"
 }

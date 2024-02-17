@@ -11,12 +11,8 @@ studentRouter.get("/:studentID", getStudent);
 
 /* example: post with the following object in the body:
 {
-  "name": "test",
-  "address": {
-    "city": "city"
-  },
-  "email": "test@email.com",
-  "image_url": "test.png"
+  "name": "Zach",
+  "email": "zach@zach.com"
 }
 */ 
 studentRouter.post("/", createStudent);
