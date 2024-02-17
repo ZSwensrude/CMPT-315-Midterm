@@ -1,5 +1,5 @@
 # CMPT 315 Midterm Class Registration App
-This contains the frontend and backend folders. 
+**This contains the frontend and backend folders.**
 
 ### To run the app, you have to run `npm i` then `npm start` in both `/backend/` and `/frontend/course-registration/`.
 
