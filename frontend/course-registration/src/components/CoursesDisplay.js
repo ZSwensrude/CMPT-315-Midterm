@@ -7,11 +7,14 @@ import Button from 'react-bootstrap/Button';
 import StudentDropdown from "./StudentDropdown";
 import axios from 'axios';
 
+// note: this file is kinda long with all the helper functions so if i had more time I'd
+// prolly move them to a utils file
 const CoursesDisplay = ({ scheduleDisplay }) => {
   // if no student selected, default value is -1
   const [selectedStudent, setSelectedStudent] = useState(-1);
   const [courses, setCourses] = useState([]);
 
+  // get course data
   const { isPending: coursesPending, error: coursesError, data: coursesData, refetch: coursesRefetch } = useQuery({
     queryKey: ['repoCourses'],
     queryFn: () =>
@@ -20,6 +23,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
       ),
   });
 
+  // get student data
   const { isPending: studentsPending, error: studentsError, data: studentsData, refetch: studentsRefetch } = useQuery({
     queryKey: ['repoStudents'],
     queryFn: () =>
@@ -28,6 +32,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
       ),
   });
 
+  // get courses to display
   useEffect( () => {
     if (scheduleDisplay){
       // if we are looking at the schedule view, get only the courses the student is in (if any)
@@ -38,14 +43,11 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
     }
   }, [scheduleDisplay, coursesData, selectedStudent])
   
-  useEffect( () => {
-    console.log("courses", courses);
-  }, [courses])
-  
   //loading/pending checks
   if (coursesPending || studentsPending) return 'Loading...'
   if (coursesError || studentsError) return 'An error has occurred: ' + coursesError.message
   
+  // on student select (sent to dropdown button)
   const onStudentSelect = (studentID) => {
     setSelectedStudent(studentID);
   };
@@ -79,8 +81,14 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
 
   }
 
+  /**
+   * Checks if selected course has time conflict with any other course student is enrolled in
+   * @param {*} studentID student who's courses to check
+   * @param {*} courseID new course to check if fits in schedule
+   * @returns true/false if there is a conflict or not
+   */
   const courseTimeConflict = (studentID, courseID) => {
-    const studentCourses = coursesData.filter((course) => course.studentsEnrolled.includes(`${selectedStudent}`))
+    const studentCourses = coursesData.filter((course) => course.studentsEnrolled.includes(`${studentID}`))
     // no courses = no time conflict :)
     if (studentCourses.length === 0)
       return false; 
@@ -100,7 +108,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
   /**
    * enrolls currently selected student in the course clicked
    * @param {*} selectedCourse course enroll was clicked on
-   * @returns N/A
+   * @returns -1 if failed, otherwise N/A
    */
   const enrollCurrentStudent = async (selectedCourse) => {
     if (!spaceInCourse(selectedCourse)) {
@@ -110,11 +118,13 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
     }
 
     if (studentInCourse(selectedStudent, selectedCourse)) {
+      // show already in course warning (shouldnt happen cause button changes)
       console.log("student already in course!");
       return -1;
     }
 
     if (courseTimeConflict(selectedStudent, selectedCourse)) {
+      // show time conflict warning 
       console.log("course has time conflict with another student course")
       return -1;
     }
@@ -133,6 +143,11 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
     }
   }
 
+  /**
+   * unenrolls currently selected student in the course clicked
+   * @param {*} selectedCourse course enroll was clicked on
+   * @returns -1 if failed, otherwise N/A
+   */
   const unenrollCurrentStudent = async (selectedCourse) => {
     if (!studentInCourse(selectedStudent, selectedCourse)) {
       console.log("student not in course!");
@@ -153,14 +168,13 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
     }
   }
 
-
   return (
     <div className="courseDisplay">
       <div>
         <h1>Courses</h1>
         <Button variant="secondary" onClick={() => {coursesRefetch(); studentsRefetch();} } >Refresh</Button>
         <StudentDropdown students={studentsData} onStudentSelect={onStudentSelect} />
-        { courses.length > 0 ? (
+        { courses?.length > 0 ? (
           <Table striped bordered hover>
             <thead>
               <tr>
