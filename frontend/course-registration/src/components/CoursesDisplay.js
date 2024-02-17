@@ -171,7 +171,7 @@ const CoursesDisplay = ({ scheduleDisplay }) => {
         position="bottom-center"
         autoClose={2000}
       />
-      <div>
+      <div className="courseHolder">
         <StudentDropdown students={studentsData} onStudentSelect={onStudentSelect} className="dropdown" />
         { courses?.length > 0 ? (
           <Table striped bordered hover>

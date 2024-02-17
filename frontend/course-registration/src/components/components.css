@@ -3,6 +3,11 @@
   justify-content: center;
   align-items: center;
   overflow-x: auto;
+  height: 100%;
+}
+
+.courseHolder {
+  height: 100%;
 }
 
 .dropdown {
