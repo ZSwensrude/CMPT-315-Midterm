@@ -5,6 +5,7 @@ import './components.css'
 import { useQuery } from '@tanstack/react-query';
 import Button from 'react-bootstrap/Button';
 import StudentDropdown from "./StudentDropdown";
+import axios from 'axios';
 
 const CoursesDisplay = () => {
   // if no student selected, default value is -1
@@ -26,10 +27,28 @@ const CoursesDisplay = () => {
       ),
   });
 
+  useEffect( () => {
+    console.log("coursesData", coursesData);
+  }, coursesData)
+
   const onStudentSelect = (studentID) => {
     console.log("selected student id: ", studentID);
     setSelectedStudent(studentID);
   };
+
+  const enrollCurrentStudent = async (selectedClass) => {
+    // create json body we are sending
+    let newData = { "studentID": `${selectedStudent}` } 
+    try {
+      // then try to send it as a patch
+      const response = await axios.patch(`http://localhost:8080/courses/addstudent/${selectedClass}`, newData);
+      console.log('Update successful:', response.data);
+      // Handle successful update
+    } catch (error) {
+      console.error('Update failed:', error);
+      // Handle error
+    }
+  }
 
 
   //loading/pending checks
@@ -60,6 +79,14 @@ const CoursesDisplay = () => {
                 <td>{course.department}</td>
                 <td>{course.startTime}</td>
                 <td>?/{course.capacity}</td>
+                { selectedStudent !== -1 && (
+                  <td>
+                    <Button 
+                      variant="success"
+                      onClick={() => enrollCurrentStudent(course.id)}
+                    >Enroll</Button>
+                  </td>
+                ) }
               </tr>
             )) }
           </tbody>
