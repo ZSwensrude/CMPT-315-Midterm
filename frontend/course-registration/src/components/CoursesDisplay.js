@@ -36,13 +36,62 @@ const CoursesDisplay = () => {
     setSelectedStudent(studentID);
   };
 
-  const enrollCurrentStudent = async (selectedClass) => {
+  //loading/pending checks
+  if (coursesPending || studentsPending) return 'Loading...'
+  if (coursesError || studentsError) return 'An error has occurred: ' + coursesError.message
+
+  /**
+   * Finds out if there is space in the course or not
+   * @param {*} courseID - id of course to check
+   * @returns true or false if the course is full or not
+   */
+  const spaceInCourse = (courseID) => {
+    const foundCourse = coursesData.find(course => course.id === courseID);
+    if (!foundCourse)
+      return -1;
+
+    const notFull = (foundCourse.studentsEnrolled.length < foundCourse.capacity);
+    return notFull;
+  }
+
+  /**
+   * finds out if the given student is already in the course or not
+   * @param {*} studentID student to check
+   * @param {*} courseID course to check
+   * @returns true/false if they are already in or not
+   */
+  const studentInCourse = (studentID, courseID) => {
+    const foundCourse = coursesData.find(course => course.id === courseID);
+    if (!foundCourse)
+      return -1;
+
+    console.log("studentID", studentID, "foundCourse.studentsEnrolled", foundCourse.studentsEnrolled, foundCourse.studentsEnrolled.includes(`${studentID}`))
+
+    return (foundCourse.studentsEnrolled.includes(`${studentID}`));
+
+  }
+
+  const enrollCurrentStudent = async (selectedCourse) => {
+    await coursesRefetch();
+
+    if (!spaceInCourse(selectedCourse)) {
+      // show capacity full warning
+      console.log("course full!");
+      return -1;
+    }
+
+    if (studentInCourse(selectedStudent, selectedCourse)) {
+      console.log("student already in course!");
+      return -1;
+    }
+
     // create json body we are sending
     let newData = { "studentID": `${selectedStudent}` } 
     try {
       // then try to send it as a patch
-      const response = await axios.patch(`http://localhost:8080/courses/addstudent/${selectedClass}`, newData);
+      const response = await axios.patch(`http://localhost:8080/courses/addstudent/${selectedCourse}`, newData);
       console.log('Update successful:', response.data);
+      await coursesRefetch();
       // Handle successful update
     } catch (error) {
       console.error('Update failed:', error);
@@ -51,9 +100,7 @@ const CoursesDisplay = () => {
   }
 
 
-  //loading/pending checks
-  if (coursesPending || studentsPending) return 'Loading...'
-  if (coursesError || studentsError) return 'An error has occurred: ' + coursesError.message
+  
 
   return (
     <div className="courseDisplay">
