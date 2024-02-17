@@ -7,9 +7,10 @@ import Button from 'react-bootstrap/Button';
 import StudentDropdown from "./StudentDropdown";
 import axios from 'axios';
 
-const CoursesDisplay = () => {
+const CoursesDisplay = ({ scheduleDisplay }) => {
   // if no student selected, default value is -1
   const [selectedStudent, setSelectedStudent] = useState(-1);
+  const [courses, setCourses] = useState([]);
 
   const { isPending: coursesPending, error: coursesError, data: coursesData, refetch: coursesRefetch } = useQuery({
     queryKey: ['repoCourses'],
@@ -28,17 +29,25 @@ const CoursesDisplay = () => {
   });
 
   useEffect( () => {
-    console.log("coursesData", coursesData);
-  }, [coursesData])
-
-  const onStudentSelect = (studentID) => {
-    console.log("selected student id: ", studentID);
-    setSelectedStudent(studentID);
-  };
-
+    if (scheduleDisplay){
+      setCourses(coursesData.filter((course) => course.studentsEnrolled.includes(`${selectedStudent}`)));
+    } else {
+      setCourses(coursesData);
+    }
+    
+  }, [scheduleDisplay, coursesData, selectedStudent])
+  
+  useEffect( () => {
+    console.log("courses", courses);
+  }, [courses])
+  
   //loading/pending checks
   if (coursesPending || studentsPending) return 'Loading...'
   if (coursesError || studentsError) return 'An error has occurred: ' + coursesError.message
+  
+  const onStudentSelect = (studentID) => {
+    setSelectedStudent(studentID);
+  };
 
   /**
    * Finds out if there is space in the course or not
@@ -46,7 +55,7 @@ const CoursesDisplay = () => {
    * @returns true or false if the course is full or not
    */
   const spaceInCourse = (courseID) => {
-    const foundCourse = coursesData.find(course => course.id === courseID);
+    const foundCourse = courses.find(course => course.id === courseID);
     if (!foundCourse)
       return -1;
 
@@ -61,7 +70,7 @@ const CoursesDisplay = () => {
    * @returns true/false if they are already in or not
    */
   const studentInCourse = (studentID, courseID) => {
-    const foundCourse = coursesData.find(course => course.id === courseID);
+    const foundCourse = courses.find(course => course.id === courseID);
     if (!foundCourse)
       return -1;
 
@@ -127,44 +136,50 @@ const CoursesDisplay = () => {
         <h1>Courses</h1>
         <Button variant="secondary" onClick={() => {coursesRefetch(); studentsRefetch();} } >Refresh</Button>
         <StudentDropdown students={studentsData} onStudentSelect={onStudentSelect} />
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Course Name</th>
-              <th>Department</th>
-              <th>Time</th>
-              <th>Capacity</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            { coursesData?.map( (course, index) => (
-              <tr key={`course-${index}`}>
-                <td>{course.id}</td>
-                <td>{course.courseName}</td>
-                <td>{course.department}</td>
-                <td>{course.startTime}</td>
-                <td>{course.studentsEnrolled.length}/{course.capacity}</td>
+        { courses.length > 0 ? (
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Course Name</th>
+                <th>Department</th>
+                <th>Time</th>
+                <th>Capacity</th>
                 { selectedStudent !== -1 && (
-                  <td>
-                    { !studentInCourse(selectedStudent, course.id) ? (
-                      <Button 
-                        variant="success"
-                        onClick={() => enrollCurrentStudent(course.id)}
-                      >Enroll</Button>
-                    ) : (
-                      <Button 
-                        variant="danger"
-                        onClick={() => unenrollCurrentStudent(course.id)}
-                      >Unenroll</Button>
-                    )}
-                  </td>
-                ) }
+                  <th>Action</th>
+                )}
               </tr>
-            )) }
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              { courses?.map( (course, index) => (
+                <tr key={`course-${index}`}>
+                  <td>{course.id}</td>
+                  <td>{course.courseName}</td>
+                  <td>{course.department}</td>
+                  <td>{course.startTime}</td>
+                  <td>{course.studentsEnrolled.length}/{course.capacity}</td>
+                  { selectedStudent !== -1 && (
+                    <td>
+                      { !studentInCourse(selectedStudent, course.id) ? (
+                        <Button 
+                          variant="success"
+                          onClick={() => enrollCurrentStudent(course.id)}
+                        >Enroll</Button>
+                      ) : (
+                        <Button 
+                          variant="danger"
+                          onClick={() => unenrollCurrentStudent(course.id)}
+                        >Unenroll</Button>
+                      )}
+                    </td>
+                  ) }
+                </tr>
+              )) }
+            </tbody>
+          </Table>
+        ) : (
+          <h4>Select a student or enroll this student in a course to see their schedule</h4>
+        )}
       </div>  
     </div>
   );

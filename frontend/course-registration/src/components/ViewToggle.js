@@ -16,7 +16,7 @@ const ViewToggle = ({ state, setState }) => {
           checked={state === "courses"}
           onChange={(e) => setState(e.currentTarget.value)}
         >
-          {"Courses"}
+          {"All Courses"}
         </ToggleButton>
         <ToggleButton
           id={`radio-schedules`}
@@ -27,7 +27,7 @@ const ViewToggle = ({ state, setState }) => {
           checked={state === "schedules"}
           onChange={(e) => setState(e.currentTarget.value)}
         >
-          {"Schedules"}
+          {"Student Schedule"}
         </ToggleButton>
       </ButtonGroup>
     </>
